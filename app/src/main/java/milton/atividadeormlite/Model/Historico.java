@@ -71,7 +71,7 @@ public class Historico {
         this.valorKwHora = valorKwHora;
     }
 
-    public double calculoPorMinuto(Double potencia, Integer minutos, double valor) {
+    public double calculoPorMinuto(Double potencia, int minutos, double valor) {
 
         double horas, kwh, totalGasto;
 
@@ -82,7 +82,7 @@ public class Historico {
         return totalGasto;
     }
 
-    public double calculoPorHora(Double potencia, Integer horas, double valor) {
+    public double calculoPorHora(Double potencia, int horas, double valor) {
 
         double kwh, totalGasto;
 

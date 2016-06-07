@@ -46,6 +46,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
         carregaSpinnerEletrodomestico();
         carregaSpinnerMetodoCalculo();
         listaHistorico();
+        buscaPotencia();
     }
 
     public void recebeViews() {
@@ -68,7 +69,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
             final Dao<Eletrodomestico, Integer> eletrodomesticoDao = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getEletrodomesticoDao();
             ArrayList<Eletrodomestico> listEletro = (ArrayList) eletrodomesticoDao.queryForAll();
 
-            ArrayAdapter<Eletrodomestico> adapter = new ArrayAdapter<Eletrodomestico>(this, android.R.layout.simple_list_item_1, listEletro);
+            ArrayAdapter<Eletrodomestico> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listEletro);
             spinnerNomeEletro.setAdapter(adapter);
 
         } catch (Exception e) {
@@ -123,6 +124,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
             this.listaHistorico();
 
+            buscaPotencia();
             Toast.makeText(CadastrarUtilizacaoActivity.this, "Consumo registrado !", Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
@@ -136,31 +138,33 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
     public void registraUtilizacao(View v) {
 
-        Eletrodomestico eletrodomestico = new Eletrodomestico();
+        Eletrodomestico eletrodomestico;
         Historico historico = new Historico();
-
+        int minutos;
+        double potencia;
+        double valorKwh;
         eletrodomestico = (Eletrodomestico) spinnerNomeEletro.getSelectedItem();
 
         if (spinnerMetodoCalc.getSelectedItem().toString().equals("Por Minuto")) {
 
-            Integer minutos = Integer.parseInt(editTextTempoUtilizacao.getText().toString());
-            Double potencia = eletrodomestico.getPotencia();
-            Double valorKwh = Double.parseDouble(editTextValorKwH.getText().toString());
+            minutos = Integer.parseInt(editTextTempoUtilizacao.getText().toString());
+            potencia = eletrodomestico.getPotencia();
+            valorKwh = Double.parseDouble(editTextValorKwH.getText().toString());
 
             historico.setTotalGasto(historico.calculoPorMinuto(potencia, minutos, valorKwh));
 
         } else {
 
-            Integer minutos = Integer.parseInt(editTextTempoUtilizacao.getText().toString());
-            Double potencia = eletrodomestico.getPotencia();
-            Double valorKwh = Double.parseDouble(editTextValorKwH.getText().toString());
+            minutos = Integer.parseInt(editTextTempoUtilizacao.getText().toString());
+            potencia = eletrodomestico.getPotencia();
+            valorKwh = Double.parseDouble(editTextValorKwH.getText().toString());
 
             historico.setTotalGasto(historico.calculoPorHora(potencia, minutos, valorKwh));
         }
 
         historico.setTempoUtilizado(Double.parseDouble(editTextTempoUtilizacao.getText().toString()));
         historico.setEletrodomestico(eletrodomestico);
-
+        historico.setValorKwHora(Double.parseDouble(editTextValorKwH.getText().toString()));
         try {
 
             Dao<Historico, Integer> historicoDao = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao();
@@ -199,6 +203,29 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
             Toast.makeText(CadastrarUtilizacaoActivity.this, "Erro ao listar histórico: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void buscaPotencia() {
+
+        try {
+            Historico historico = new Historico();
+            List<Historico> list;
+            int i = 0;
+            Dao<Historico, Integer> historicoDao = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao();
+            list = historicoDao.queryForAll();
+
+            while (i < list.size()) {
+
+                historico = list.get(i);
+
+                i++;
+            }
+            editTextValorKwH.setText(String.valueOf(historico.getValorKwHora()));
+        } catch (Exception e) {
+
+            System.out.print(e.getMessage());
+
+        }
     }
 
 }
