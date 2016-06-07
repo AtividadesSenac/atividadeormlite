@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Milton\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-core\4.48\e579bd2905d0399af5029aaaf9817d5fa0ca88a5\ormlite-core-4.48.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\ormlite-core-4.48_d5c3698701b6cd4618e574ceea34a17679943968\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="9c6be9e8a492b46e5124efe1a29f94fae3e917b3">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_c49ebd74cb2ad743b5d6f53e203b3192b308bdc3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="8c108c22c99e794eff255bb34d2a461200c4cbb0">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.0_27b928ad02422154accb9bc628b2ed3e330af7a3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="6e3578f92f7462d1a935a1d36173e3bdd1234976">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.0_c578fc225aed26867a9f3b6671000167698913a9\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-android\4.48\afa06f539a4026c10b247386312aa67404b80a16\ormlite-android-4.48.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="afa06f539a4026c10b247386312aa67404b80a16">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\ormlite-android-4.48_e56b9d95ff49160e135883fbc0066199ae604c2a\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="292a9fa091757208efa65e77eef63088247e51f3">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.0_2d55dd0d798414b9f6db5289739eaf4378744e26\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.2.0\support-annotations-23.2.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="c5bf571bb10462bd90e5419ade67793f71acbc87">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.0_47f738321501ddfd67f8a47b5d10804f2d6c7287\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="8903980136b591e5b108397be70c45c942207c40">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b709008e3e7f3214c49753eb128b5e0380000213\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e5f32fa48a3eb2de0c987025c11b6e3864b634d9">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.0_80a9c766f0491d1e25399b19f241b1263bad0487\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.0\jars\libs\internal_impl-23.2.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="6e239441500605809818997dd63b62a947195f8c">
+        <dex dex="C:\Users\Milton\Documents\Android Projects\AtividadeOrmLite\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.0_4af9c889f18d0446863762f65c0bd7195ff20080\classes.dex" />
+    </item>
+
+</items>

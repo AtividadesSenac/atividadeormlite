@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Consumo de Energia</string>
+
+    <!--BUTTON-->
+    <string name="btn_cadastroeletrodomestico">Cadastrar Eletrodoméstico</string>
+    <string name="btn_cadastrarutilizacao">Cadastrar Utilização</string>
+    <string name="btn_enviar">ENVIAR</string>
+
+
+    <string name="btn_cadastrar">CADASTRAR</string>
+
+    <!--LABEL-->
+    <string name="label_nome_eletrodomestico">Nome do eletrodoméstico:</string>
+    <string name="label_marca">Marca:</string>
+    <string name="label_potencia">Potência (Watts):</string>
+    <string name="label_list_eletromesticos">Eletrodomésticos cadastrados:</string>
+    <string name="label_metodo_de_calculo">Método de Calc(Min/Hr):</string>
+    <string name="label_tempo_utilizacao">Tempo de Utilização:</string>
+    <string name="label_valor_kwhora">Valor do kW/h:</string>
+
+    <!--HINT-->
+    <string name="hint_nome_eletrodomestico">Digite o nome</string>
+    <string name="hint_marca">Digite a marca</string>
+    <string name="hint_potencia">Digite a potencia em Watts</string>
+
+</resources>
