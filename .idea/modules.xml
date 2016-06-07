@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AtividadeOrmLite.iml" filepath="$PROJECT_DIR$/AtividadeOrmLite.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/atividadeormlite.iml" filepath="$PROJECT_DIR$/atividadeormlite.iml" />
     </modules>
   </component>
 </project>
