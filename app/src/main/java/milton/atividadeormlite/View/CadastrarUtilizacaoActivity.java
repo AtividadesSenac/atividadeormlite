@@ -1,6 +1,7 @@
 package milton.atividadeormlite.View;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,6 +34,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
             editTextValorKwH;
 
     Button btnEnviar;
+    Button btnBuscar;
     ListView listViewHistorico;
 
     Eletrodomestico eletrodomestico = new Eletrodomestico();
@@ -58,6 +60,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
         editTextValorKwH = (EditText) findViewById(R.id.editTextValorKwH);
 
         btnEnviar = (Button) findViewById(R.id.btnEnviarUtilizacao);
+        btnBuscar = (Button) findViewById(R.id.btnBuscar);
 
 
         listViewHistorico = (ListView) findViewById(R.id.listViewHistorico);
@@ -226,6 +229,27 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
             System.out.print(e.getMessage());
 
         }
+    }
+
+    public void escanearQR(View v) {
+        Intent intent = new Intent("com.googe.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, 0);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("SCAN_RESULT");
+                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+
+                Toast.makeText(this, "Resultado: " + result, Toast.LENGTH_LONG).show();
+
+
+            }
+        }
+
     }
 
 }

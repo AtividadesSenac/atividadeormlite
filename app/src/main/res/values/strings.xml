@@ -4,6 +4,8 @@
     <!--BUTTON-->
     <string name="btn_cadastroeletrodomestico">Cadastrar Eletrodoméstico</string>
     <string name="btn_cadastrarutilizacao">Cadastrar Utilização</string>
+    <string name="btn_buscar">Buscar eletroméstico</string>
+
     <string name="btn_enviar">ENVIAR</string>
 
 

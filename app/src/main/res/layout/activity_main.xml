@@ -28,5 +28,14 @@
         android:text="@string/btn_cadastrarutilizacao"
         android:textColor="@color/color_textbutton" />
 
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="@color/color_button"-->
+        <!--android:onClick="chamaCadastrarUtilizacaoActivity"-->
+        <!--android:text="@string/btn_buscar"-->
+        <!--android:textColor="@color/color_textbutton" />-->
+
 
 </LinearLayout>
