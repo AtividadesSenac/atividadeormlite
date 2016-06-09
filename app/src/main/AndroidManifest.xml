@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="milton.atividadeormlite">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
     <application
         android:allowBackup="true"
         android:banner="@drawable/ic_laucher_novo"
@@ -12,7 +17,7 @@
         <activity android:name=".View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="com.google.zxing.client.android.SCAN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

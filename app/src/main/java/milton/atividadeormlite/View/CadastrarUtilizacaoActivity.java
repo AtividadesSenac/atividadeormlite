@@ -62,7 +62,6 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
         btnEnviar = (Button) findViewById(R.id.btnEnviarUtilizacao);
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
 
-
         listViewHistorico = (ListView) findViewById(R.id.listViewHistorico);
     }
 
@@ -232,11 +231,14 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
     }
 
     public void escanearQR(View v) {
-        Intent intent = new Intent("com.googe.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+
+        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+        intent.putExtra("SCAN_MODE", "SCAN_MODE");
+
         startActivityForResult(intent, 0);
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 0) {
