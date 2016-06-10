@@ -1,15 +1,22 @@
 package milton.atividadeormlite.View;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
@@ -17,6 +24,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import milton.atividadeormlite.DAO.MyORMLiteHelper;
@@ -232,21 +241,75 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
     public void escanearQR(View v) {
 
-        Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-        intent.putExtra("SCAN_MODE", "SCAN_MODE");
-
-        startActivityForResult(intent, 0);
+        try {
+            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+            startActivityForResult(intent, 0);
+        } catch (ActivityNotFoundException anfe) {
+            Toast.makeText(this, "Você precisa baixar o Barcode", Toast.LENGTH_LONG).show();
+            Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 0) {
+
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
+
             if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("SCAN_RESULT");
+
+                final String result = data.getStringExtra("SCAN_RESULT");
                 String format = data.getStringExtra("SCAN_RESULT_FORMAT");
 
-                Toast.makeText(this, "Resultado: " + result, Toast.LENGTH_LONG).show();
+                //layout dentro do alert com os edittexts
+                final Context context = getApplicationContext();
+                final LinearLayout layout = new LinearLayout(context);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+
+                builderSingle.setPositiveButton("HISTÓRICO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        AlertDialog.Builder builderSingle = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
+                        ListView listViewHistorico = new ListView(CadastrarUtilizacaoActivity.this);
+
+//                        Collection<Historico> myCollection = eletrodomesticoSelecionado.getHistoricos();
+//                        List<Historico> list = new ArrayList<Historico>(myCollection);
+
+                        try {
+
+                            QueryBuilder<Historico, Integer> queryHistorico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao().queryBuilder();
+                            QueryBuilder<Eletrodomestico, Integer> queryEletrodomestico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getEletrodomesticoDao().queryBuilder();
+                            ArrayList<Historico> list = (ArrayList) queryEletrodomestico.join(queryHistorico).where().eq(result, "eletrodomestico_id").query();
+
+                            final Dao<Historico, Integer> historicoDao = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao();
+                            double soma = 0;
+                            ArrayAdapter<Historico> adapterHistorico = new ArrayAdapter<>(CadastrarUtilizacaoActivity.this, android.R.layout.simple_list_item_1,
+                                    list);
+
+                            //layout dentro do alert com os edittexts
+                            final Context context = getApplicationContext();
+                            final LinearLayout layout = new LinearLayout(context);
+                            final TextView textViewTotalGasto = new TextView(CadastrarUtilizacaoActivity.this);
+                            final TextView textViewResultado = new TextView(CadastrarUtilizacaoActivity.this);
+                            textViewTotalGasto.setText("Total Gasto: R$ - " + String.valueOf(soma));
+                            layout.setOrientation(LinearLayout.VERTICAL);
+                            listViewHistorico.setAdapter(adapterHistorico);
+                            layout.addView(textViewTotalGasto);
+                            layout.addView(listViewHistorico);
+                            builderSingle.setView(layout);
+                            builderSingle.show();
+
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage() + " - " + e.getCause());
+                        }
+                    }
+                });
 
 
             }
@@ -255,3 +318,4 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
     }
 
 }
+
