@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,13 +42,18 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
     EditText editTextTempoUtilizacao,
             editTextValorKwH;
+    boolean cliqueLongo = false;
+
 
     Button btnEnviar;
     Button btnBuscar;
     ListView listViewHistorico;
 
     Eletrodomestico eletrodomestico = new Eletrodomestico();
+    Eletrodomestico eletrodomesticoSelecionado;
     Historico historico;
+    ListView listViewEletrodomesticos;
+    Historico hist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,57 +271,92 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
                 final String result = data.getStringExtra("SCAN_RESULT");
                 String format = data.getStringExtra("SCAN_RESULT_FORMAT");
 
-                //layout dentro do alert com os edittexts
-                final Context context = getApplicationContext();
-                final LinearLayout layout = new LinearLayout(context);
-                layout.setOrientation(LinearLayout.VERTICAL);
+                try {
 
+                    final Dao<Eletrodomestico, Integer> eletrodomesticoDao = MyORMLiteHelper.getInstance(this).getEletrodomesticoDao();
 
-                builderSingle.setPositiveButton("HISTÓRICO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    final AlertDialog.Builder alerta = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
 
-                        AlertDialog.Builder builderSingle = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
-                        ListView listViewHistorico = new ListView(CadastrarUtilizacaoActivity.this);
-
-//                        Collection<Historico> myCollection = eletrodomesticoSelecionado.getHistoricos();
-//                        List<Historico> list = new ArrayList<Historico>(myCollection);
-
-                        try {
-
-                            QueryBuilder<Historico, Integer> queryHistorico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao().queryBuilder();
-                            QueryBuilder<Eletrodomestico, Integer> queryEletrodomestico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getEletrodomesticoDao().queryBuilder();
-                            ArrayList<Historico> list = (ArrayList) queryEletrodomestico.join(queryHistorico).where().eq(result, "eletrodomestico_id").query();
-
-                            final Dao<Historico, Integer> historicoDao = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao();
-                            double soma = 0;
-                            ArrayAdapter<Historico> adapterHistorico = new ArrayAdapter<>(CadastrarUtilizacaoActivity.this, android.R.layout.simple_list_item_1,
-                                    list);
-
-                            //layout dentro do alert com os edittexts
-                            final Context context = getApplicationContext();
-                            final LinearLayout layout = new LinearLayout(context);
-                            final TextView textViewTotalGasto = new TextView(CadastrarUtilizacaoActivity.this);
-                            final TextView textViewResultado = new TextView(CadastrarUtilizacaoActivity.this);
-                            textViewTotalGasto.setText("Total Gasto: R$ - " + String.valueOf(soma));
-                            layout.setOrientation(LinearLayout.VERTICAL);
-                            listViewHistorico.setAdapter(adapterHistorico);
-                            layout.addView(textViewTotalGasto);
-                            layout.addView(listViewHistorico);
-                            builderSingle.setView(layout);
-                            builderSingle.show();
-
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage() + " - " + e.getCause());
+                    alerta.setNegativeButton("FECHAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
                         }
-                    }
-                });
+                    });
+
+                    alerta.setPositiveButton("Histórico", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ArrayList<Historico> listTeste = null;
 
 
+                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
+
+
+                            try {
+
+                                final Dao<Historico, Integer> historicoDao = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao();
+                                final QueryBuilder<Eletrodomestico, Integer> queryEletrodomestico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getEletrodomesticoDao().queryBuilder();
+                                final QueryBuilder<Historico, Integer> queryHistorico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao().queryBuilder();
+
+                                ListView lvHistoricos = new ListView(getApplicationContext());
+                                eletrodomesticoSelecionado = (Eletrodomestico) queryEletrodomestico.join(queryHistorico).where().eq("ideletrodomestico", result).query();
+
+                                Collection<Historico> myCollection = eletrodomesticoSelecionado.getHistoricos();
+                                ArrayList<Historico> listHistoricoIt = new ArrayList<Historico>();
+                                List<Historico> list = new ArrayList<Historico>(myCollection);
+                                listTeste = (ArrayList) queryEletrodomestico.join(queryHistorico).where().eq("ideletrodomestico", result).query();
+
+                                Toast.makeText(CadastrarUtilizacaoActivity.this, "Tamanho lista " + listTeste.size(), Toast.LENGTH_SHORT).show();
+
+
+                                Iterator<Historico> it = eletrodomesticoSelecionado.getHistoricos().iterator();
+                                double soma = 0;
+
+                                while (it.hasNext()) {
+                                    hist = it.next();
+                                    listHistoricoIt.add(hist);
+                                    soma = soma + hist.getTotalGasto();
+                                }
+
+                                ArrayAdapter<Historico> adapterHistorico = new ArrayAdapter<>(CadastrarUtilizacaoActivity.this, android.R.layout.simple_list_item_1,
+                                        listTeste);
+
+                                //layout dentro do alert com os edittexts
+                                final Context context = getApplicationContext();
+                                final LinearLayout layout = new LinearLayout(context);
+                                final TextView textViewTotalGasto = new TextView(CadastrarUtilizacaoActivity.this);
+                                final TextView textViewResultado = new TextView(CadastrarUtilizacaoActivity.this);
+                                textViewTotalGasto.setText("Total Gasto: R$ - " + String.valueOf(soma));
+                                layout.setOrientation(LinearLayout.VERTICAL);
+                                lvHistoricos.setAdapter(adapterHistorico);
+                                layout.addView(textViewTotalGasto);
+                                layout.addView(lvHistoricos);
+                                builderSingle.setView(layout);
+                                builderSingle.show();
+
+                            } catch (Exception ex) {
+                                System.out.print(ex.getMessage());
+                                Toast.makeText(CadastrarUtilizacaoActivity.this, "erroo " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+                    });
+
+                    alerta.show();
+
+
+                } catch (Exception e) {
+                    System.out.print(e.getMessage());
+
+                    Toast.makeText(CadastrarUtilizacaoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
     }
+
 
 }
 
