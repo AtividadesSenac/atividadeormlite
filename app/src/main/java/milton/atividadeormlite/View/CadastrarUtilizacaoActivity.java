@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import milton.atividadeormlite.DAO.MyORMLiteHelper;
 import milton.atividadeormlite.Model.Eletrodomestico;
@@ -54,6 +57,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
     Historico historico;
     ListView listViewEletrodomesticos;
     Historico hist;
+    TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
         carregaSpinnerMetodoCalculo();
         listaHistorico();
         buscaPotencia();
+
     }
 
     public void recebeViews() {
@@ -79,6 +84,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
         listViewHistorico = (ListView) findViewById(R.id.listViewHistorico);
     }
+
 
     public void carregaSpinnerEletrodomestico() {
 
@@ -273,9 +279,40 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
                 try {
 
-                    final Dao<Eletrodomestico, Integer> eletrodomesticoDao = MyORMLiteHelper.getInstance(this).getEletrodomesticoDao();
+                    final QueryBuilder<Eletrodomestico, Integer> queryEletrodomestico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getEletrodomesticoDao().queryBuilder();
+                    eletrodomesticoSelecionado = (Eletrodomestico) queryEletrodomestico.where().eq("ideletrodomestico", result).queryForFirst();
 
                     final AlertDialog.Builder alerta = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
+
+//
+                    //layout dento do alert com os edittexts
+                    final Context context = getApplicationContext();
+                    final LinearLayout layout = new LinearLayout(context);
+                    final TextView textViewNomeEletro = new TextView(CadastrarUtilizacaoActivity.this);
+                    final TextView textViewMarcaEletro = new TextView(CadastrarUtilizacaoActivity.this);
+                    final TextView textViewPotenciaEletro = new TextView(CadastrarUtilizacaoActivity.this);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+
+                    alerta.setTitle("Eletrodomestico");
+
+                    alerta.setMessage("Nome: " + eletrodomesticoSelecionado.getNome() + "\n" +
+                            "Marca: " + eletrodomesticoSelecionado.getMarca() + "\n" +
+                            "Potência: " + eletrodomesticoSelecionado.getPotencia());
+
+                    alerta.setView(layout);
+
+                    tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+
+                        @Override
+                        public void onInit(int status) {
+                            if (status != TextToSpeech.ERROR) {
+                                tts.setLanguage(Locale.getDefault());
+                                tts.speak("Nome \n" + eletrodomesticoSelecionado.getNome() + "Marca \n" + eletrodomesticoSelecionado.getMarca() + "Potência \n" + eletrodomesticoSelecionado.getPotencia(), TextToSpeech.QUEUE_FLUSH, null);
+                            }
+                        }
+                    });
+
+//
 
                     alerta.setNegativeButton("FECHAR", new DialogInterface.OnClickListener() {
                         @Override
@@ -287,8 +324,6 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
                     alerta.setPositiveButton("Histórico", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ArrayList<Historico> listTeste = null;
-
 
                             AlertDialog.Builder builderSingle = new AlertDialog.Builder(CadastrarUtilizacaoActivity.this);
 
@@ -300,15 +335,13 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
                                 final QueryBuilder<Historico, Integer> queryHistorico = MyORMLiteHelper.getInstance(CadastrarUtilizacaoActivity.this).getHistoricoDao().queryBuilder();
 
                                 ListView lvHistoricos = new ListView(getApplicationContext());
-                                eletrodomesticoSelecionado = (Eletrodomestico) queryEletrodomestico.join(queryHistorico).where().eq("ideletrodomestico", result).query();
+                                eletrodomesticoSelecionado = (Eletrodomestico) queryEletrodomestico.where().eq("ideletrodomestico", result).queryForFirst();
 
                                 Collection<Historico> myCollection = eletrodomesticoSelecionado.getHistoricos();
                                 ArrayList<Historico> listHistoricoIt = new ArrayList<Historico>();
                                 List<Historico> list = new ArrayList<Historico>(myCollection);
-                                listTeste = (ArrayList) queryEletrodomestico.join(queryHistorico).where().eq("ideletrodomestico", result).query();
 
-                                Toast.makeText(CadastrarUtilizacaoActivity.this, "Tamanho lista " + listTeste.size(), Toast.LENGTH_SHORT).show();
-
+                                Toast.makeText(CadastrarUtilizacaoActivity.this, "Tamanho lista " + list.size(), Toast.LENGTH_SHORT).show();
 
                                 Iterator<Historico> it = eletrodomesticoSelecionado.getHistoricos().iterator();
                                 double soma = 0;
@@ -320,7 +353,7 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
                                 }
 
                                 ArrayAdapter<Historico> adapterHistorico = new ArrayAdapter<>(CadastrarUtilizacaoActivity.this, android.R.layout.simple_list_item_1,
-                                        listTeste);
+                                        list);
 
                                 //layout dentro do alert com os edittexts
                                 final Context context = getApplicationContext();
@@ -348,15 +381,12 @@ public class CadastrarUtilizacaoActivity extends AppCompatActivity {
 
 
                 } catch (Exception e) {
-                    System.out.print(e.getMessage());
-
                     Toast.makeText(CadastrarUtilizacaoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
 
     }
-
 
 }
 
